@@ -1,5 +1,7 @@
 #!/bin/sh
 
+apt-get install --reinstall libpq-dev
+python3 -m pip install psycopg2
 python3 -m pip install requests
 python3 -m pip install twilio
 python3 -m pip install selenium
