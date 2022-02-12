@@ -13,13 +13,10 @@ class Message(models.Model):
 
 class Image(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
+    views = models.IntegerField(default=0)
+    uniqid = models.CharField(max_length=112, unique=True)
     mime_type = models.CharField(max_length=20, default="image/jpeg")
     filesize = models.IntegerField(default=0)
     content = models.TextField()
 
-class Url(models.Model):
-    message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    position = models.IntegerField()
-    title = models.CharField(max_length=255)
-    url = models.CharField(max_length=255)
 

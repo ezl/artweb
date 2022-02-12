@@ -1,8 +1,8 @@
-from sms2url.models import Message, Image, Url
+from sms2url.models import Message, Image
 from django.utils import timezone
-from sms2url.handlers.google import google
 from twilio.rest import Client as twilio
 import logging, requests, base64, environ
+import random, string
 
 logger = logging.getLogger('django')
 env = environ.Env()
@@ -57,23 +57,26 @@ class sms():
                 continue
 
             # Add image
+            uniqid = sms.generate_uniqid()
             img = Image(
                 message_id = msg_id,
+                uniqid = uniqid,
                 mime_type = request.POST.get("MediaContentType" + str(x)),
                 content = base64.b64encode(res.content)
             )
             img.save()
 
-            # Search image, send SMS if needed
-            message = google.search(msg_id, request.POST.get("MediaUrl" + str(x)))
-            if message != "":
-                message = "Image Found on the sites:" + message
-                sms.send(request.POST.get('From'), message)
-
+            # Send message
+            sms.send(request.POST.get("From"), uniqid)
             x = x + 1
 
-    def send(phone, message):
+    def send(phone, uniqid):
 
+        # Set message
+        url = "http://" + env("DOMAIN_NAME") + "/pics/" + uniqid
+        message = "Thanks, and your image can be found at:\n\n" + url
+
+        # Send SMS
         if env("SMS_TYPE") == "nexmo":
             sms.send_nexmo(phone, message)
         else:
@@ -103,5 +106,18 @@ class sms():
 
         res = requests.post('https://rest.nexmo.com/sms/json', data=req)
         print(res.json)
+
+    def generate_uniqid():
+
+        uniqid = ""
+        while (True):
+
+            uniqid = ''.join(random.choice(string.ascii_letters) for i in range(10))
+            try:
+                row = Image.objects.get(uniqid=uniqid)
+            except:
+                break
+
+        return uniqid
 
 
