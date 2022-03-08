@@ -1,7 +1,6 @@
 from django.urls import include, path
-from artweb.views import pics
 from django.urls import include, path, re_path
-from artweb.views import api
+from artweb.sms.views import pics, api
 
 urlpatterns = [
     path('api/user/<username>', api.user_get),

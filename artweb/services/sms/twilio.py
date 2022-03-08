@@ -13,7 +13,7 @@ class Twilio(object):
 
     # Send sms message
     def send(self, to: str, message: str):
-
+        print("Sending to " + to + "\n\n")
         res = self.client.messages.create(
             from_ = env("TWILIO_SENDER"),
             to = to,
