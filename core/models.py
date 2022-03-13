@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
-from artweb.core.users.manager import UserManager
+from core.users.manager import UserManager
 import environ
 
 env = environ.Env()

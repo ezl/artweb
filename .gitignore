@@ -1,0 +1,8 @@
+artweb/.env
+logs/info.log
+logs/debug.log
+geckodriver.log  
+*.pyc
+__pycache__/
+config/.env
+

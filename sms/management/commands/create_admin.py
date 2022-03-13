@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from artweb.core.models import User
+from core.models import User
 
 class Command(BaseCommand):
     help = 'Create administrator in custom user model.'

@@ -1,7 +1,7 @@
-from artweb.services.sms import twilio, nexmo
-from artweb.sms.models.image import Image
-from artweb.sms.models.message import Message
-from artweb.core.models import User
+from services.sms import twilio, nexmo
+from sms.models.image import Image
+from sms.models.message import Message
+from core.models import User
 from django.utils import timezone
 import logging, base64, environ, random, string
 

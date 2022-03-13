@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from artweb.core.models import User
+from core.models import User
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

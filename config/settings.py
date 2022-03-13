@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'rest_framework',
-    'artweb.sms',
-    'artweb.core'
+    'sms',
+    'core'
 ]
 
 AUTH_USER_MODEL='core.User'
@@ -45,8 +45,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'artweb.urls'
-WSGI_APPLICATION = 'artweb.config.wsgi.application'
+ROOT_URLCONF = 'config.urls'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database

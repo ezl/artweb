@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from artweb.sms.handlers.sms import sms
-from artweb.sms.models.image import Image
-from artweb.core.models import User
+from sms.handlers.sms import sms
+from sms.models.image import Image
+from core.models import User
 import logging, base64, requests, environ
 
 logger = logging.getLogger('django')

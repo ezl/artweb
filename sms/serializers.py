@@ -1,5 +1,5 @@
-from artweb.core.models import User
-from artweb.sms.models.image import Image
+from core.models import User
+from sms.models.image import Image
 from rest_framework import serializers
 
 class ImageSerializer(serializers.ModelSerializer):

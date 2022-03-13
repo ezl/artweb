@@ -1,6 +1,6 @@
 from django.db import models
 from .message import Message
-from artweb.core.models import User
+from core.models import User
 from django.utils import timezone
 import environ
 

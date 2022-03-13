@@ -2,9 +2,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
-from artweb.core.models import User
-from artweb.sms.models.image import Image
-from artweb.sms.serializers import UserSerializer, ImageSerializer
+from core.models import User
+from sms.models.image import Image
+from sms.serializers import UserSerializer, ImageSerializer
 
 @api_view(['GET'])
 def user_get(request, username: str):
