@@ -7,7 +7,9 @@ APP_DIRS=True
 
 # Init environment vars
 env = environ.Env()
-environ.Env.read_env()
+#environ.Env.read_env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
