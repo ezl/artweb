@@ -22,6 +22,9 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username'
     objects = UserManager()
 
+    is_superuser = models.BooleanField(default=False) # TODO delete
+
+
     @property
     def profile_url(self) ->str:
         url = "http://" + env("DOMAIN_NAME") + "/user/" + self.username
@@ -58,4 +61,26 @@ class User(AbstractBaseUser):
     class Meta:
         db_table = "artweb_user"
 
+    @property
+    def is_anonymous(self):
+        """
+        Always return False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
+
+    @property
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
+
+
+
+    @property
+    def is_staff(self):
+        # All superusers are staff
+        return self.is_admin
 

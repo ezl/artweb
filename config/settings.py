@@ -7,8 +7,10 @@ APP_DIRS=True
 
 # Init environment vars
 env = environ.Env()
-#environ.Env.read_env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+INSTANCE_DIR = Path('/srv/')
+INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 SECRET_KEY = env('SECRET_KEY')
@@ -17,10 +19,12 @@ ALLOWED_HOSTS = ["*"]
 
 # Installed apps
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'rest_framework',
     'sms',
     'core'
@@ -35,6 +39,24 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated'
     ]
 }
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 
 MIDDLEWARE = [
@@ -83,6 +105,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+STATIC_ROOT = os.path.join(INSTANCE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_URL = '/static/'
 
 
 # Internationalization
