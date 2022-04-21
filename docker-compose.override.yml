@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  web:
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+#    depends_on:
+#      - mailhog
+#
+#  mailhog:
+#    user: root
+#    image: mailhog/mailhog
+#    command: ["-storage=maildir", "-maildir-path=/maildir"]
+#    logging:
+#      driver: 'none'  # disable saving logs
+#    ports:
+#      - 8025:8025 # web ui
+#    volumes:
+#      - mailhog:/maildir
+#
+#
+#volumes:
+#  mailhog:
