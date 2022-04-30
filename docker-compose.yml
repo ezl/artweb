@@ -1,0 +1,41 @@
+version: "3.9"
+
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options:
+    max-size: "100m"
+    max-file: "5"
+    mode: non-blocking
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging: *default-logging
+
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+
+  web:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+      - DEBUG=${DEBUG}
+
+    volumes:
+      - ${INSTANCE_DIR}:/srv/
+
+    depends_on:
+      - db
+    logging: *default-logging
+
+volumes:
+  postgres_data:

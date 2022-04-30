@@ -1,10 +1,11 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import permissions
 from core.models import User
 from sms.models.image import Image
 from sms.serializers import UserSerializer, ImageSerializer
+from rest_framework.decorators import authentication_classes, permission_classes
+
 
 @api_view(['GET'])
 def user_get(request, username: str):
@@ -20,6 +21,7 @@ def user_get(request, username: str):
     ser = UserSerializer(user)
     return Response(ser.data)
 
+
 @api_view(['GET'])
 def image_get(request, uniqid: str):
     """
@@ -34,3 +36,12 @@ def image_get(request, uniqid: str):
     return Response(ser.data)
 
 
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def api_status(request):
+    """
+    Retrieve API status
+    """
+
+    return Response(status=status.HTTP_200_OK)

@@ -7,7 +7,6 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -39,7 +38,8 @@ class Migration(migrations.Migration):
                 ('content', models.TextField()),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
                 ('message', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sms.message')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images',
+                                           to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'artweb_image',

@@ -1,0 +1,65 @@
+name: Test
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - dev
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+          cache-dependency-path: 'requirements-dev.txt'
+
+      - name: Install Linter
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: flake8
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: quay.io/shaperid/postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Install PIP Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Django Tests
+        env:
+            DATABASE_URL: 'postgres://postgres:postgres@localhost:5432/postgres'
+            FRONTEND_DOMAIN: 'http://localhost:3000'
+            DJANGO_SECRET_KEY: secret
+        run: |
+          python manage.py test

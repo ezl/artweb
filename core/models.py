@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser
 from django.utils import timezone
 from core.users.manager import UserManager
 import environ
 
 env = environ.Env()
+
 
 class User(AbstractBaseUser):
     username = models.CharField(max_length=100, null=True, blank=True, default=None, unique=True)
@@ -22,15 +23,17 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username'
     objects = UserManager()
 
+    is_superuser = models.BooleanField(default=False)  # TODO delete
+
     @property
-    def profile_url(self) ->str:
+    def profile_url(self) -> str:
         url = "http://" + env("DOMAIN_NAME") + "/user/" + self.username
         return url
 
     @property
     def location(self) -> str:
 
-        if self.country == None:
+        if self.country is None:
             return self.phone
         else:
             location = self.city + ", " + self.state + ", " + self.country
@@ -58,4 +61,23 @@ class User(AbstractBaseUser):
     class Meta:
         db_table = "artweb_user"
 
+    @property
+    def is_anonymous(self):
+        """
+        Always return False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
 
+    @property
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
+
+    @property
+    def is_staff(self):
+        # All superusers are staff
+        return self.is_admin

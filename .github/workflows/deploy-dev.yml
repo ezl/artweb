@@ -1,0 +1,29 @@
+name: Deploy To Development
+
+on: 
+  push:
+    branches:
+      - dev
+      - ci-cd
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: danleyb2/artweb/.github/workflows/test.yml@ci-cd
+
+  deploy:
+    needs: test
+    uses: danleyb2/artweb/.github/workflows/deploy.yml@ci-cd
+    with:
+      ECS_CLUSTER: artweb-dev
+      DJANGO_DEBUG: 'True'
+      DJANGO_SECRET_KEY: 'secret'
+      AWSLOGS_STREAM_PREFIX: Development
+
+    secrets:
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.CI_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_AWS_SECRET_ACCESS_KEY }}
+      SLACK_URL: ${{ secrets.SLACK_URL }}
+      DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+

@@ -2,6 +2,7 @@ from core.models import User
 from sms.models.image import Image
 from rest_framework import serializers
 
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
@@ -20,6 +21,7 @@ class ImageSerializer(serializers.ModelSerializer):
             'user_created_at'
         ]
 
+
 class UserImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
@@ -31,8 +33,10 @@ class UserImageSerializer(serializers.ModelSerializer):
             'created_at'
         ]
 
+
 class UserSerializer(serializers.ModelSerializer):
     images = UserImageSerializer(many=True)
+
     class Meta:
         model = User
         fields = [
@@ -49,4 +53,3 @@ class UserSerializer(serializers.ModelSerializer):
             'created_at',
             'images'
         ]
-

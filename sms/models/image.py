@@ -6,6 +6,7 @@ import environ
 
 env = environ.Env()
 
+
 class Image(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="images")
@@ -40,7 +41,7 @@ class Image(models.Model):
     def user_full_name(self):
         return self.user.full_name
 
-    #property
+    # property
     def user_location(self) -> str:
         return self.user.location
 
@@ -51,5 +52,3 @@ class Image(models.Model):
     @property
     def user_profile_url(self) -> str:
         return self.user.profile_url
-
-
