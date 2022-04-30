@@ -47,6 +47,6 @@ services:
 
   web:
     stop_grace_period: 1h
-    command: uwsgi --ini /code/uwsgi.ini
+    command: uwsgi --ini /app/uwsgi.ini
     ports:
       - 5000:8000

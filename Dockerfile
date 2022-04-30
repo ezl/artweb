@@ -1,16 +1,13 @@
 # syntax=docker/dockerfile:1
 FROM python:3.9
 ENV PYTHONUNBUFFERED=1
-WORKDIR /code
-RUN apt-get update\
-    && apt-get install --no-install-recommends -y \
-        libmemcached11 \
-        libmemcachedutil2 \
-        libmemcached-dev \
-        libz-dev\
-    && rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip uwsgi
 
-COPY requirements.txt /code/
-RUN python -m pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
-COPY . /code/
+# Allows docker to cache installed dependencies between builds
+COPY ./requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+COPY . /app/
+WORKDIR /app
+
+EXPOSE 8000
