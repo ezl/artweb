@@ -17,7 +17,6 @@ jobs:
     with:
       ECS_CLUSTER: artweb-dev
       DJANGO_DEBUG: 'True'
-      DJANGO_CONFIGURATION: Production
       DJANGO_SECRET_KEY: 'secret'
       AWSLOGS_STREAM_PREFIX: Development
 

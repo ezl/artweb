@@ -89,7 +89,6 @@ jobs:
         run: ./ecs/api.sh
         env:
           DJANGO_DEBUG: ${{ inputs.DJANGO_DEBUG }}
-          DJANGO_CONFIGURATION: ${{ inputs.DJANGO_CONFIGURATION }}
           DJANGO_SECRET_KEY: ${{ inputs.DJANGO_SECRET_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.DJANGO_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -102,7 +101,7 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ecs-deploy-task.json
-          service: dailyidea-backend-api
+          service: artweb-api
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
@@ -110,7 +109,7 @@ jobs:
         if: always()
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: dailyidea-dev
+          SLACK_CHANNEL: artweb-general
           SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
           SLACK_USERNAME: github
           SLACK_COLOR: ${{ job.status }}
@@ -118,61 +117,6 @@ jobs:
           SLACK_TITLE: Backend Api
           SLACK_FOOTER: ${{ job.status }}
 
-  deploy-worker:
-    name: Worker
-    needs: deploy-api
-    runs-on: ubuntu-latest
-    env:
-      ECS_CLUSTER: ${{ inputs.ECS_CLUSTER }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Generate Image ID
-        id: generate-image-id
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-        run: echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
-      - name: Generate Worker task definition
-        run: ./ecs/worker.sh
-        env:
-          DJANGO_DEBUG: ${{ inputs.DJANGO_DEBUG }}
-          DJANGO_CONFIGURATION: ${{ inputs.DJANGO_CONFIGURATION }}
-          DJANGO_SECRET_KEY: ${{ inputs.DJANGO_SECRET_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.DJANGO_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          AWSLOGS_STREAM_PREFIX: ${{ inputs.AWSLOGS_STREAM_PREFIX }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          ECR_IMAGE: ${{ steps.generate-image-id.outputs.image }}
-
-      - name: Deploy Worker
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ecs-deploy-task.json
-          service: dailyidea-backend-worker
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
-
-      - name: Slack Notification
-        if: always()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: dailyidea-dev
-          SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
-          SLACK_USERNAME: github
-          SLACK_COLOR: ${{ job.status }}
-          MSG_MINIMAL: actions url,commit
-          SLACK_TITLE: Backend Worker
-          SLACK_FOOTER: ${{ job.status }}
 
   collect-static:
     name: Collect Static
@@ -197,7 +141,6 @@ jobs:
       - name: Collect Static
         env:
             DJANGO_SECRET_KEY: local
-            DJANGO_CONFIGURATION: Production
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
@@ -207,7 +150,7 @@ jobs:
         if: always()
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: dailyidea-dev
+          SLACK_CHANNEL: artweb-general
           SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
           SLACK_USERNAME: github
           SLACK_COLOR: ${{ job.status }}

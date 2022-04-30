@@ -61,6 +61,5 @@ jobs:
             DATABASE_URL: 'postgres://postgres:postgres@localhost:5432/postgres'
             FRONTEND_DOMAIN: 'http://localhost:3000'
             DJANGO_SECRET_KEY: secret
-            DJANGO_CONFIGURATION: Test
         run: |
           python manage.py test
