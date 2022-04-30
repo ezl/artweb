@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 import environ
+import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPEND_SLASH = False
@@ -73,14 +75,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("DATABASE_NAME"),
-        'USER': env("DATABASE_USER"),
-        'PASSWORD': env("DATABASE_PASS"),
-        'HOST': env("DATABASE_HOST"),
-        'PORT': env("DATABASE_PORT")
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL', 'postgres://postgres:@postgres:5432/postgres'),
+        conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
+    )
 }
 
 # Password validation
