@@ -9,9 +9,6 @@ on:
       DJANGO_DEBUG:
         required: true
         type: string
-      DJANGO_CONFIGURATION:
-        required: true
-        type: string
       DJANGO_SECRET_KEY:
         required: true
         type: string
