@@ -13,7 +13,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 INSTANCE_DIR = Path('/srv/')
 INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
