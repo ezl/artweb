@@ -4,6 +4,9 @@ from selenium.webdriver.common.by import By
 from sms2url.models import Url
 import logging
 
+lgr = logging.getLogger(__name__)
+
+
 class google():
 
     def search(msg_id, url):
@@ -31,18 +34,16 @@ class google():
 
             # Add url
             u = Url(
-                message_id = msg_id,
-                position = position,
-                title = parts[0],
-                url = parts[1]
+                message_id=msg_id,
+                position=position,
+                title=parts[0],
+                url=parts[1]
             )
             u.save()
 
-            ## Update variables
+            # Update variables
             position = position + 1
             message = message + "\n\nTitle: " + parts[0] + "\nURL: " + parts[1]
 
         # Return
         return message
-
-

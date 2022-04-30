@@ -2,7 +2,6 @@ from django.urls import path
 from sms.views import pics, api
 from django.contrib import admin
 
-
 urlpatterns = [
     path('api/user/<username>', api.user_get),
     path('api/image/<uniqid>', api.image_get),
@@ -10,8 +9,3 @@ urlpatterns = [
     path('pics/<image_id>', pics.display_image, name='Display Image'),
     path('admin/', admin.site.urls),
 ]
-
-
-
-
-

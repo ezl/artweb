@@ -5,7 +5,6 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -20,12 +19,16 @@ class Migration(migrations.Migration):
                 ('username', models.CharField(blank=True, default=None, max_length=100, null=True, unique=True)),
                 ('password', models.CharField(blank=True, default=None, max_length=128, null=True)),
                 ('phone', models.CharField(max_length=20, unique=True)),
-                ('email', models.EmailField(blank=True, default=None, max_length=255, null=True, verbose_name='E-Mail Address')),
-                ('full_name', models.CharField(blank=True, default=None, max_length=255, null=True, verbose_name='Full Name')),
+                ('email',
+                 models.EmailField(blank=True, default=None, max_length=255, null=True, verbose_name='E-Mail Address')),
+                ('full_name',
+                 models.CharField(blank=True, default=None, max_length=255, null=True, verbose_name='Full Name')),
                 ('country', models.CharField(blank=True, default=None, max_length=2, null=True)),
-                ('state', models.CharField(blank=True, default=None, max_length=100, null=True, verbose_name='Province / State')),
+                ('state', models.CharField(blank=True, default=None, max_length=100, null=True,
+                                           verbose_name='Province / State')),
                 ('city', models.CharField(blank=True, default=None, max_length=100, null=True, verbose_name='City')),
-                ('zip', models.CharField(blank=True, default=None, max_length=20, null=True, verbose_name='PPostal / Zip Code')),
+                ('zip', models.CharField(blank=True, default=None, max_length=20, null=True,
+                                         verbose_name='PPostal / Zip Code')),
                 ('is_active', models.BooleanField(default=True)),
                 ('admin', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),

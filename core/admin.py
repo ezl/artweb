@@ -6,6 +6,8 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
 from core.models import User
+from sms.models.image import Image
+from sms.models.message import Message
 
 
 class UserCreationForm(forms.ModelForm):
@@ -73,7 +75,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         'created_at',
         'email',
-        #'profile_link',
+        # 'profile_link',
         'admin',
         'is_active',
         'last_login',
@@ -103,10 +105,5 @@ admin.site.register(User, UserAdmin)
 # unregister the Group model from admin.
 admin.site.unregister(Group)
 
-from sms.models.image import Image
-from sms.models.message import Message
-
 admin.site.register(Image)
 admin.site.register(Message)
-
-

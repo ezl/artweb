@@ -1,30 +1,31 @@
 from django.contrib.auth.models import BaseUserManager
 
+
 class UserManager(BaseUserManager):
 
     def create_user(
-        self,
-        phone: str,
-        country = None,
-        state = None,
-        city = None,
-        zip = None,
-        username = None,
-        password=None
+            self,
+            phone: str,
+            country=None,
+            state=None,
+            city=None,
+            zip=None,
+            username=None,
+            password=None
     ):
 
         if not phone:
-            raise ValueError("Users must have an phone address");
+            raise ValueError("Users must have an phone address")
         elif not username:
             username = phone
 
         user, created = self.get_or_create(
-            username = username,
+            username=username,
             phone=phone,
         )
 
         # Set location, if first user
-        if created == True:
+        if created:
             user.country = country
             user.state = state
             user.city = city
@@ -38,14 +39,14 @@ class UserManager(BaseUserManager):
         return [user, created]
 
     def create_superuser(
-        self,
-        username: str,
-        password: str
+            self,
+            username: str,
+            password: str
     ):
 
         user, created = self.create_user(
-            phone = username,
-            username = username,
+            phone=username,
+            username=username,
             password=password,
         )
 
@@ -54,6 +55,3 @@ class UserManager(BaseUserManager):
         user.save()
 
         return user
-
-
-

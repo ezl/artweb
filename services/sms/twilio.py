@@ -1,9 +1,11 @@
 from twilio.rest import Client as twilio
 from functools import cached_property
-import environ, logging
+import environ
+import logging
 
 env = environ.Env()
 logger = logging.getLogger('django')
+
 
 class Twilio(object):
 
@@ -15,11 +17,11 @@ class Twilio(object):
     def send(self, to: str, message: str):
         print("Sending to " + to + "\n\n")
         res = self.client.messages.create(
-            from_ = env("TWILIO_SENDER"),
-            to = to,
-            body = message
+            from_=env("TWILIO_SENDER"),
+            to=to,
+            body=message
         )
         print(res)
 
-api = Twilio()
 
+api = Twilio()
